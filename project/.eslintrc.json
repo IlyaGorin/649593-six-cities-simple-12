@@ -7,7 +7,7 @@
         "ecmaVersion": 2020,
         "sourceType": "module",
         "project": [
-            "project/tsconfig.json"
+            "tsconfig.json"
         ]
     },
     "env": {
