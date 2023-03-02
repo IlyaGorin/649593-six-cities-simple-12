@@ -1,0 +1,32 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "project": [
+            "tsconfig.json"
+        ]
+    },
+    "env": {
+        "es2017": true,
+        "browser": true
+    },
+    "extends": "htmlacademy/react-typescript",
+    "rules": {
+        "indent": [
+            "error",
+            2
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
