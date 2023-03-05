@@ -1,12 +1,14 @@
 import MainScreen from '../../pages/main-screen/main-screen';
+import { Offers } from '../../types/offers';
 
 type AppProps = {
   offersCount: number;
+  offers: Offers[];
 }
 
-function App({offersCount}: AppProps): JSX.Element {
+function App({offersCount, offers}: AppProps): JSX.Element {
   return (
-    <MainScreen offersCount={offersCount}/>
+    <MainScreen offersCount={offersCount} offers={offers}/>
   );
 }
 

@@ -1,12 +1,14 @@
 import Header from '../../components/header/header';
 import OfferCard from '../../components/offer-card/offer-card';
 import SvgSprite from '../../components/svg-sprite/svg-sprite';
+import { Offers } from '../../types/offers';
 
-type MainPageProps = {
+type MainScreenProps = {
   offersCount: number;
+  offers: Offers[];
 }
 
-function MainScreen({offersCount}:MainPageProps ): JSX.Element {
+function MainScreen({offersCount, offers }:MainScreenProps ): JSX.Element {
   return (
     <div className='page page--gray page--main'>
       <SvgSprite />
@@ -70,11 +72,7 @@ function MainScreen({offersCount}:MainPageProps ): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
+                {offers.map((offerData) => <OfferCard key={offerData.id} offerData={offerData}/>)}
               </div>
             </section>
             <div className="cities__right-section">
