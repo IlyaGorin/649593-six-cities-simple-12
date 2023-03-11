@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { offers } from './mocks/offers';
-
-const OFFERS_COUNT = 10;
+import { OFFERS_COUNT } from './const';
 
 
 const root = ReactDOM.createRoot(

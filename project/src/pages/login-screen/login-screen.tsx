@@ -1,8 +1,12 @@
+import {Helmet} from 'react-helmet-async';
 import SvgSprite from '../../components/svg-sprite/svg-sprite';
 
 function LoginScreen(): JSX.Element {
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>six cities simple: authorization</title>
+      </Helmet>
       <SvgSprite />
       <header className="header">
         <div className="container">

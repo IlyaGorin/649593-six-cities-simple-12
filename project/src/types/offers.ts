@@ -12,8 +12,8 @@ export type City = {
 export type Host = {
   avatarUrl: string;
   id: number;
-  isPro: boolean;
   name: string;
+  isPro: boolean;
 }
 
 export type Location = {
@@ -30,7 +30,6 @@ export type Offers = {
   host: Host;
   id: number;
   images: string[];
-  isPremium: boolean;
   location: Location;
   maxAdults: number;
   previewImage: string;
@@ -38,4 +37,5 @@ export type Offers = {
   rating: number;
   title: string;
   type: string;
+  isPremium: boolean;
 }
