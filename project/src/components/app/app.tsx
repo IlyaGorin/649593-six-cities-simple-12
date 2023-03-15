@@ -9,11 +9,10 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import RoomScreen from '../../pages/room-screen/room-screen';
 
 type AppProps = {
-  offersCount: number;
   offers: Offers[];
 }
 
-function App({offersCount, offers}: AppProps): JSX.Element {
+function App({offers}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -21,7 +20,7 @@ function App({offersCount, offers}: AppProps): JSX.Element {
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route
               path={AppRoute.Root}
-              element={<MainScreen offersCount={offersCount} offers={offers} />}
+              element={<MainScreen offers={offers} />}
             />
             <Route path={AppRoute.Room}>
               <Route index element={<RoomScreen />}/>
