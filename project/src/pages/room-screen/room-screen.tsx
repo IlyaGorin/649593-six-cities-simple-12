@@ -1,15 +1,11 @@
 import {Helmet} from 'react-helmet-async';
-import SvgSprite from '../../components/svg-sprite/svg-sprite';
-import Header from '../../components/header/header';
 
 function RoomScreen(): JSX.Element {
   return (
-    <div className="page">
+    <>
       <Helmet>
         <title>six cities simple: property</title>
       </Helmet>
-      <SvgSprite />
-      <Header />
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -282,7 +278,7 @@ function RoomScreen(): JSX.Element {
           </section>
         </div>
       </main>
-    </div>
+    </>
   );
 }
 
