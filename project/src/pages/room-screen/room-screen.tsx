@@ -1,6 +1,20 @@
-import {Helmet} from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Offers } from '../../types/offers';
+import { findFirstSentence } from '../../utils/utils';
+import { calculateRating } from '../../utils/utils';
 
-function RoomScreen(): JSX.Element {
+type RoomScreenProps = {
+  offers: Offers[];
+}
+
+function RoomScreen({ offers }:RoomScreenProps): JSX.Element {
+  const { id } = useParams();
+  //TODO оптимизировать
+  const necessaryOffer = offers.find((offer)=> offer.id === Number(id))!;
+  const IMAGES_COUNT = 6;
+  const images:string[] = necessaryOffer ? necessaryOffer.images.slice(0, IMAGES_COUNT) : [];
+
   return (
     <>
       <Helmet>
@@ -10,91 +24,57 @@ function RoomScreen(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
+              {
+                images ? images.map((image:string)=> (
+                  <div className="property__image-wrapper" key={image}>
+                    <img className="property__image" src={image} alt="Photo studio" />
+                  </div>
+                )) : ''
+              }
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>Premium</span>
-              </div>
+              {necessaryOffer.isPremium && (
+                <div className="property__mark">
+                  <span>Premium</span>
+                </div>
+              )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-              Beautiful &amp; luxurious studio at great location
+                  {necessaryOffer ? findFirstSentence(necessaryOffer.description) : ''}
                 </h1>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: '80%'}} />
+                  <span style={{ width: `${calculateRating(necessaryOffer.rating)}%` }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{necessaryOffer.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-              Apartment
+                  {necessaryOffer.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-              3 Bedrooms
+                  {necessaryOffer.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-              Max 4 adults
+                  Max {necessaryOffer.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">€120</b>
+                <b className="property__price-value">€{necessaryOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">
-                Wi-Fi
-                  </li>
-                  <li className="property__inside-item">
-                Washing machine
-                  </li>
-                  <li className="property__inside-item">
-                Towels
-                  </li>
-                  <li className="property__inside-item">
-                Heating
-                  </li>
-                  <li className="property__inside-item">
-                Coffee machine
-                  </li>
-                  <li className="property__inside-item">
-                Baby seat
-                  </li>
-                  <li className="property__inside-item">
-                Kitchen
-                  </li>
-                  <li className="property__inside-item">
-                Dishwasher
-                  </li>
-                  <li className="property__inside-item">
-                Cabel TV
-                  </li>
-                  <li className="property__inside-item">
-                Fridge
-                  </li>
+                  {necessaryOffer.goods.map((good)=>(
+                    <li className="property__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="property__host">

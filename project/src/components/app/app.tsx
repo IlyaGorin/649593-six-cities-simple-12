@@ -23,8 +23,8 @@ function App({offers}: AppProps): JSX.Element {
               element={<MainScreen offers={offers} />}
             />
             <Route path={AppRoute.Room}>
-              <Route index element={<RoomScreen />}/>
-              <Route path={AppRoute.RoomId} index element={<RoomScreen />}/>
+              <Route index element={<RoomScreen offers={offers}/>}/>
+              <Route path={AppRoute.RoomId} index element={<RoomScreen offers={offers} />}/>
             </Route>
             <Route
               path='*'
