@@ -4,3 +4,5 @@ export enum AppRoute {
   Room = '/offer/',
   RoomId = ':id',
 }
+
+export const CHAR_LENGTH = 3;
