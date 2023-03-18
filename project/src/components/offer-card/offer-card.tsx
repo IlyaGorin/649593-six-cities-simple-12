@@ -1,5 +1,7 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import { Offers } from '../../types/offers';
-
 import { calculateRating } from '../../utils/utils';
 import { findFirstSentence } from '../../utils/utils';
 
@@ -8,8 +10,26 @@ type OfferCardProps = {
 }
 
 function OfferCard({offerData}:OfferCardProps): JSX.Element {
+  const [, setIsActive] = useState<{ id: number | null; isActive: boolean }>({
+    id: null,
+    isActive: false,
+  });
+
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card"
+      onMouseEnter={()=> {
+        setIsActive({
+          id: offerData.id,
+          isActive: true,
+        });
+      }}
+      onMouseLeave={()=>{
+        setIsActive({
+          id: null,
+          isActive: false,
+        });
+      }}
+    >
       {offerData?.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -35,7 +55,7 @@ function OfferCard({offerData}:OfferCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{findFirstSentence(offerData.description)}</a>
+          <Link to={`${AppRoute.Room}${offerData.id}`}>{findFirstSentence(offerData.description)}</Link>
         </h2>
         <p className="place-card__type">{offerData.type}</p>
       </div>
