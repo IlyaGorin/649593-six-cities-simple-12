@@ -3,17 +3,18 @@ import { Helmet } from 'react-helmet-async';
 import { Offers } from '../../types/offers';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
-import CommentForm from '../../components/comment-form/commetn-form';
+import CommentForm from '../../components/comment-form/comment-form';
 
 type RoomScreenProps = {
   offers: Offers[];
 }
 
+const IMAGES_COUNT = 6;
+
 function RoomScreen({ offers }:RoomScreenProps): JSX.Element {
   const { id } = useParams();
   //TODO оптимизировать
   const necessaryOffer = offers.find((offer)=> offer.id === Number(id))!;
-  const IMAGES_COUNT = 6;
   const images:string[] = necessaryOffer ? necessaryOffer.images.slice(0, IMAGES_COUNT) : [];
 
   return (

@@ -30,11 +30,11 @@ function App({offers}: AppProps): JSX.Element {
               path='*'
               element={<NotFoundScreen />}
             />
+            <Route
+              path={AppRoute.Login}
+              element={<LoginScreen />}
+            />
           </Route>
-          <Route
-            path={AppRoute.Login}
-            element={<LoginScreen />}
-          />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
