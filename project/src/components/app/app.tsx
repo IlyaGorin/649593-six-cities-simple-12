@@ -13,6 +13,7 @@ type AppProps = {
 }
 
 function App({offers}: AppProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>

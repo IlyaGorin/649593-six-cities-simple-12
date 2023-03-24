@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Offers } from '../../types/offers';
@@ -7,27 +7,23 @@ import { findFirstSentence } from '../../utils/utils';
 
 type OfferCardProps = {
   offerData: Offers;
+  offerIdChangeHandler: (id: number|null) => void;
 }
 
-function OfferCard({offerData}:OfferCardProps): JSX.Element {
-  const [, setIsActive] = useState<{ id: number | null; isActive: boolean }>({
-    id: null,
-    isActive: false,
-  });
+function OfferCard({offerData, offerIdChangeHandler}:OfferCardProps): JSX.Element {
+  const [offerId, setOfferId] = useState< number | null>(null);
+
+  useEffect(() => {
+    offerIdChangeHandler(offerId);
+  }, [offerId]);
 
   return (
     <article className="cities__card place-card"
       onMouseEnter={()=> {
-        setIsActive({
-          id: offerData.id,
-          isActive: true,
-        });
+        setOfferId(offerData.id,);
       }}
       onMouseLeave={()=>{
-        setIsActive({
-          id: null,
-          isActive: false,
-        });
+        setOfferId(null);
       }}
     >
       {offerData?.isPremium && (
