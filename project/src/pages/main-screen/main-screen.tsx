@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Offers } from '../../types/offers';
+import Map from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
 
 type MainScreenProps = {
@@ -6,6 +8,12 @@ type MainScreenProps = {
 }
 
 function MainScreen({offers}:MainScreenProps ): JSX.Element {
+  const [activeOfferId, setActiveOfferId] = useState<number| null>(null);
+
+  function offerIdChangeHandler(newState:number|null) {
+    setActiveOfferId(newState);
+  }
+
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -66,11 +74,11 @@ function MainScreen({offers}:MainScreenProps ): JSX.Element {
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offers={offers}/>
+              <OffersList offers={offers} offerIdChangeHandler={offerIdChangeHandler} />
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map" />
+            <Map offers={offers} offerId={activeOfferId}/>
           </div>
         </div>
       </div>

@@ -3,12 +3,13 @@ import OfferCard from '../offer-card/offer-card';
 
 type OffersListProps = {
   offers: Offers[];
+  offerIdChangeHandler: (id: number|null) => void;
 }
 
-function OffersList({offers}: OffersListProps):JSX.Element {
+function OffersList({offers, offerIdChangeHandler}: OffersListProps):JSX.Element {
   return (
     <>
-      {offers.map((offerData) => <OfferCard key={offerData.id} offerData={offerData}/>)}
+      {offers.map((offerData) => <OfferCard key={offerData.id} offerData={offerData} offerIdChangeHandler={offerIdChangeHandler}/>)}
     </>
   );
 }
