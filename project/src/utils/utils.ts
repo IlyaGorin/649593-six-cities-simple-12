@@ -27,3 +27,17 @@ export function findFirstSentence(description: string): string {
 
   return '';
 }
+
+export function formatDate(date: string): { monthYear: string; isoDate: string } {
+  const options = {
+    month: 'long' as const,
+    year: 'numeric' as const,
+  };
+  const dateObj = new Date(date);
+  const monthYear = dateObj.toLocaleDateString('en-US', options);
+  const isoDate = dateObj.toISOString();
+  return {
+    monthYear,
+    isoDate,
+  };
+}
