@@ -36,6 +36,7 @@ export function formatDate(date: string): { monthYear: string; isoDate: string }
   const dateObj = new Date(date);
   const monthYear = dateObj.toLocaleDateString('en-US', options);
   const isoDate = dateObj.toISOString();
+
   return {
     monthYear,
     isoDate,

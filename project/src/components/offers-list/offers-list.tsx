@@ -1,15 +1,17 @@
 import { Offers } from '../../types/offers';
-import OfferCard from '../offer-card/offer-card';
 
-type OffersListProps = {
-  offers: Offers[];
-  offerIdChangeHandler: (id: number|null) => void;
+type OffersListProps<T extends Offers> = {
+  offers: T[];
+  offerIdChangeHandler?: (id: number | null) => void;
+  OfferComponent: React.ComponentType<{offerData: T; offerIdChangeHandler?: (id: number | null) => void}>;
 }
 
-function OffersList({offers, offerIdChangeHandler}: OffersListProps):JSX.Element {
+function OffersList<T extends Offers>({ offers, offerIdChangeHandler, OfferComponent }: OffersListProps<T>): JSX.Element {
   return (
     <>
-      {offers.map((offerData) => <OfferCard key={offerData.id} offerData={offerData} offerIdChangeHandler={offerIdChangeHandler}/>)}
+      {offers.map((offerData) => (
+        <OfferComponent key={offerData.id} offerData={offerData} offerIdChangeHandler={offerIdChangeHandler} />
+      ))}
     </>
   );
 }

@@ -11,10 +11,11 @@ import RoomScreen from '../../pages/room-screen/room-screen';
 
 type AppProps = {
   offers: Offers[];
+  nearbyOffers:Offers[];
   reviews: Review[];
 }
 
-function App({offers, reviews}: AppProps): JSX.Element {
+function App({offers, reviews, nearbyOffers}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -25,8 +26,8 @@ function App({offers, reviews}: AppProps): JSX.Element {
               element={<MainScreen offers={offers} />}
             />
             <Route path={AppRoute.Room}>
-              <Route index element={<RoomScreen offers={offers} reviews={reviews}/>}/>
-              <Route path={AppRoute.RoomId} index element={<RoomScreen offers={offers} reviews={reviews}/>}/>
+              <Route index element={<RoomScreen offers={offers} nearbyOffers={nearbyOffers} reviews={reviews}/>}/>
+              <Route path={AppRoute.RoomId} index element={<RoomScreen offers={offers} nearbyOffers={nearbyOffers} reviews={reviews}/>}/>
             </Route>
             <Route
               path='*'
