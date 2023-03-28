@@ -5,6 +5,7 @@ import { Review } from '../../types/reviews';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
 import CommentForm from '../../components/comment-form/comment-form';
+import Map from '../../components/map/map';
 import NearbyOfferCard from '../../components/nearby-offer-card/nearby-offer-card';
 import OffersList from '../../components/offers-list/offers-list';
 import ReviewsList from '../../components/reviews-list/reviews-list';
@@ -22,6 +23,7 @@ function RoomScreen({ offers, reviews, nearbyOffers }:RoomScreenProps): JSX.Elem
   //TODO оптимизировать
   const necessaryOffer = offers.find((offer)=> offer.id === Number(id))!;
   const images:string[] = necessaryOffer ? necessaryOffer.images.slice(0, IMAGES_COUNT) : [];
+  const offersForRender = [necessaryOffer, ...nearbyOffers];
 
   return (
     <>
@@ -114,7 +116,7 @@ function RoomScreen({ offers, reviews, nearbyOffers }:RoomScreenProps): JSX.Elem
               </section>
             </div>
           </div>
-          <section className="property__map map" />
+          <Map offers={offersForRender} offerId={necessaryOffer.id}/>
         </section>
         <div className="container">
           <section className="near-places places">

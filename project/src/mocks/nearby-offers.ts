@@ -6,7 +6,7 @@ export const nearbyOffers:Offers[] = [
       'name': 'Amsterdam',
       'location': {
         'latitude': 52.3909553943508,
-        'longitude': 4.85309666406198,
+        'longitude': 4.83309666406198,
         'zoom': 13
       }
     },
@@ -52,14 +52,14 @@ export const nearbyOffers:Offers[] = [
       'longitude': 6.944974,
       'zoom': 16
     },
-    'id': 77
+    'id': 22
   },
   {
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.3609553943508,
-        'longitude': 4.85309666406198,
+        'latitude': 52.3909553943508,
+        'longitude': 4.81109666406198,
         'zoom': 13
       }
     },
@@ -103,17 +103,17 @@ export const nearbyOffers:Offers[] = [
     },
     'description': 'Peaceful studio in the most wanted area in town. Quiet house Near of everything. Completely renovated. Lovely neighbourhood, lot of trendy shops, restaurants and bars in a walking distance.',
     'location': {
-      'latitude': 48.858610000000006,
-      'longitude': 2.330499,
+      'latitude': 52.85860000000006,
+      'longitude': 2.430499,
       'zoom': 16
     },
-    'id': 33
+    'id': 44
   },
   {
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.3909553943508,
+        'latitude': 52.3409553943508,
         'longitude': 4.929309666406198,
         'zoom': 13
       }
@@ -155,10 +155,10 @@ export const nearbyOffers:Offers[] = [
     },
     'description': 'I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station. The apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath. A terrace can be used in summer.',
     'location': {
-      'latitude': 53.565341,
+      'latitude': 51.565341,
       'longitude': 9.980654000000001,
       'zoom': 16
     },
-    'id': 3
+    'id': 788
   },
 ];

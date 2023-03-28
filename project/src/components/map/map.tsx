@@ -1,14 +1,16 @@
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/useMap';
+import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
 import leaflet from 'leaflet';
 import { Icon } from 'leaflet';
 import { Offers } from '../../types/offers';
-import { cityLocations } from '../../const';
+import { cityLocations, AppRoute } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   offers: Offers[];
-  offerId: number | null;
+  offerId?: number | null;
 }
 
 const defaultCustomIcon = new Icon({
@@ -26,6 +28,8 @@ const aciveCustomIcon = leaflet.icon({
 function Map({offers, offerId}:MapProps):JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
   const map = useMap(mapRef, cityLocations.amsterdam);
+  const { pathname } = useLocation();
+  const mapWrapperClassname = classNames('map', pathname === AppRoute.Root ? 'cities__map' : 'property__map');
 
   useEffect(() => {
     let isMounted = true;
@@ -53,7 +57,7 @@ function Map({offers, offerId}:MapProps):JSX.Element {
 
 
   return (
-    <section className="cities__map map" ref={mapRef} />
+    <section className={mapWrapperClassname} ref={mapRef} />
   );
 }
 
