@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import { AppRoute } from '../../const';
 import { Offers } from '../../types/offers';
 import { calculateRating } from '../../utils/utils';
 import { findFirstSentence } from '../../utils/utils';
 
-type OfferCardProps = {
+export type OfferCardProps = {
   offerData: Offers;
-  offerIdChangeHandler: (id: number|null) => void;
+  offerIdChangeHandler?: (id: number|null) => void;
+  isNearbyOfferCard?: boolean;
 }
 
-function OfferCard({offerData, offerIdChangeHandler}:OfferCardProps): JSX.Element {
+function OfferCard({offerData, offerIdChangeHandler, isNearbyOfferCard}:OfferCardProps): JSX.Element {
   const [offerId, setOfferId] = useState< number | null>(null);
+  const cardClassName = classNames({
+    'near-places': isNearbyOfferCard,
+    'cities': !isNearbyOfferCard
+  });
 
   useEffect(() => {
-    offerIdChangeHandler(offerId);
+    if (offerIdChangeHandler) {
+      offerIdChangeHandler(offerId);
+    }
   }, [offerId]);
 
   return (
-    <article className="cities__card place-card"
+    <article className={classNames(`${cardClassName}__card place-card`)}
       onMouseEnter={()=> {
         setOfferId(offerData.id,);
       }}
@@ -31,8 +39,7 @@ function OfferCard({offerData, offerIdChangeHandler}:OfferCardProps): JSX.Elemen
           <span>Premium</span>
         </div>
       )}
-
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={classNames(`${cardClassName}__image-wrapper place-card__image-wrapper`)}>
         <a href="#">
           <img className="place-card__image" src={offerData.previewImage} width={260} height={200} alt="Place image" />
         </a>

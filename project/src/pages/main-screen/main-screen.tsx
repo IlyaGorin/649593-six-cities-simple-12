@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Offers } from '../../types/offers';
 import Map from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
+import OfferCard from '../../components/offer-card/offer-card';
 
 type MainScreenProps = {
   offers: Offers[];
@@ -74,7 +75,7 @@ function MainScreen({offers}:MainScreenProps ): JSX.Element {
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offers={offers} offerIdChangeHandler={offerIdChangeHandler} />
+              <OffersList offers={offers} offerIdChangeHandler={offerIdChangeHandler} OfferComponent={OfferCard}/>
             </div>
           </section>
           <div className="cities__right-section">

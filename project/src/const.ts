@@ -5,7 +5,7 @@ export enum AppRoute {
   RoomId = ':id',
 }
 
-export const CHAR_LENGTH = 3;
+export const CHAR_LENGTH = 50;
 
 export const cityLocations = {
   amsterdam:{
