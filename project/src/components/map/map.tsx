@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import leaflet from 'leaflet';
 import { Icon } from 'leaflet';
 import { Offers } from '../../types/offers';
-import { cityLocations, AppRoute } from '../../const';
+import { AppRoute } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
@@ -27,7 +27,8 @@ const aciveCustomIcon = leaflet.icon({
 
 function Map({offers, offerId}:MapProps):JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
-  const map = useMap(mapRef, cityLocations.amsterdam);
+  const centerMapCoords = offers[0].city.location;
+  const map = useMap(mapRef, centerMapCoords);
   const { pathname } = useLocation();
   const mapWrapperClassname = classNames('map', pathname === AppRoute.Root ? 'cities__map' : 'property__map');
 
@@ -35,12 +36,18 @@ function Map({offers, offerId}:MapProps):JSX.Element {
     let isMounted = true;
 
     if(map && isMounted) {
+      map.eachLayer((layer) => {
+        if (layer instanceof leaflet.Marker) {
+          layer.remove();
+        }
+      });
+
       offers.forEach((offer) => {
-        const {city} = offer;
+        const { location } = offer;
         leaflet
           .marker({
-            lat: city.location.latitude,
-            lng: city.location.longitude,
+            lat: location.latitude,
+            lng: location.longitude,
           },
           {
             icon: (offerId === offer.id)
@@ -53,7 +60,7 @@ function Map({offers, offerId}:MapProps):JSX.Element {
     return () => {
       isMounted = false;
     };
-  }, [map, offers, offerId]);
+  }, [map, offers, offerId, offers.length]);
 
 
   return (
