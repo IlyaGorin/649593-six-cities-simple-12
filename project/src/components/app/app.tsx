@@ -1,6 +1,9 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { fillOffersList } from '../../store/action';
+import { AppRoute, LocationNameType } from '../../const';
 import { Offers } from '../../types/offers';
 import { Review } from '../../types/reviews';
 import Layout from '../layout/layout';
@@ -13,9 +16,16 @@ type AppProps = {
   offers: Offers[];
   nearbyOffers:Offers[];
   reviews: Review[];
+  locationsNames: LocationNameType;
 }
 
-function App({offers, reviews, nearbyOffers}: AppProps): JSX.Element {
+function App({offers, reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffersList(offers));
+  }, [offers, dispatch]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -23,7 +33,7 @@ function App({offers, reviews, nearbyOffers}: AppProps): JSX.Element {
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route
               path={AppRoute.Root}
-              element={<MainScreen offers={offers} />}
+              element={<MainScreen offers={offers} locationsNames={locationsNames} />}
             />
             <Route path={AppRoute.Room}>
               <Route index element={<RoomScreen offers={offers} nearbyOffers={nearbyOffers} reviews={reviews}/>}/>
