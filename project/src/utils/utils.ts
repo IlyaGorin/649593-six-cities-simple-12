@@ -1,3 +1,6 @@
+import { SortType } from '../const';
+import { Offers } from '../types/offers';
+
 const RatingValues = {
   1: 20,
   2: 40,
@@ -41,4 +44,24 @@ export function formatDate(date: string): { monthYear: string; isoDate: string }
     monthYear,
     isoDate,
   };
+}
+
+export function sortOffers(offers:Offers[], sortBy:string ) {
+  const sortedOffers = [...offers];
+
+  switch (sortBy) {
+  case SortType.HIGTH_TO_LOW:
+    sortedOffers.sort((a, b) => b.price - a.price);
+    break;
+  case SortType.LOW_TO_HIGHT:
+    sortedOffers.sort((a, b) => a.price - b.price);
+    break;
+  case SortType.RATING:
+    sortedOffers.sort((a, b) => b.rating - a.rating);
+    break;
+  default:
+    break;
+  }
+
+  return sortedOffers;
 }
