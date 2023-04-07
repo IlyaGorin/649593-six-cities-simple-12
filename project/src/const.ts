@@ -17,3 +17,10 @@ export enum LocationName {
 }
 
 export type LocationNameType = string[];
+
+export enum SortType {
+  DEFAULT = 'Popular',
+  LOW_TO_HIGHT = 'Price: low to high',
+  HIGTH_TO_LOW = 'Price: high to low',
+  RATING = 'Top rated first',
+}
