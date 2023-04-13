@@ -4,6 +4,7 @@ import { Offers } from '../../types/offers';
 import { Review } from '../../types/reviews';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
+import { useAppSelector } from '../../hooks';
 import CommentForm from '../../components/comment-form/comment-form';
 import Map from '../../components/map/map';
 import NearbyOfferCard from '../../components/nearby-offer-card/nearby-offer-card';
@@ -11,16 +12,16 @@ import OffersList from '../../components/offers-list/offers-list';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 
 type RoomScreenProps = {
-  offers: Offers[];
   nearbyOffers: Offers[];
   reviews: Review[];
 }
 
 const IMAGES_COUNT = 6;
 
-function RoomScreen({ offers, reviews, nearbyOffers }:RoomScreenProps): JSX.Element {
+function RoomScreen({ reviews, nearbyOffers }:RoomScreenProps): JSX.Element {
   const { id } = useParams();
   //TODO оптимизировать
+  const offers = useAppSelector((state) => state.offers);
   const necessaryOffer = offers.find((offer)=> offer.id === Number(id))!;
   const images:string[] = necessaryOffer ? necessaryOffer.images.slice(0, IMAGES_COUNT) : [];
   const offersForRender = [necessaryOffer, ...nearbyOffers];
