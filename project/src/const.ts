@@ -24,3 +24,16 @@ export enum SortType {
   HIGTH_TO_LOW = 'Price: high to low',
   RATING = 'Top rated first',
 }
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
+
+
+export enum APIRoute {
+  Hotels = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+}

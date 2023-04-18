@@ -1,7 +1,9 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 import { HelmetProvider } from 'react-helmet-async';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffersAction } from '../../store/api-actions';
 import { AppRoute, LocationNameType } from '../../const';
 import { Offers } from '../../types/offers';
@@ -10,6 +12,7 @@ import Layout from '../layout/layout';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
+import PrivateRoute from '../private-route/private-route';
 import RoomScreen from '../../pages/room-screen/room-screen';
 
 type AppProps = {
@@ -20,6 +23,8 @@ type AppProps = {
 
 function App({reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  // console.log(authorizationStatus);
 
   useEffect(() => {
     dispatch(fetchOffersAction());
@@ -27,7 +32,7 @@ function App({reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route
@@ -44,11 +49,17 @@ function App({reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
             />
             <Route
               path={AppRoute.Login}
-              element={<LoginScreen />}
+              element={
+                <PrivateRoute
+                  authorizationStatus={authorizationStatus}
+                >
+                  <LoginScreen />
+                </PrivateRoute>
+              }
             />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
