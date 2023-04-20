@@ -6,8 +6,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffersAction } from '../../store/api-actions';
 import { AppRoute, LocationNameType } from '../../const';
-import { Offers } from '../../types/offers';
-import { Review } from '../../types/reviews';
 import Layout from '../layout/layout';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -16,15 +14,12 @@ import PrivateRoute from '../private-route/private-route';
 import RoomScreen from '../../pages/room-screen/room-screen';
 
 type AppProps = {
-  nearbyOffers:Offers[];
-  reviews: Review[];
   locationsNames: LocationNameType;
 }
 
-function App({reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
+function App({ locationsNames }: AppProps): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  // console.log(authorizationStatus);
 
   useEffect(() => {
     dispatch(fetchOffersAction());
@@ -39,10 +34,7 @@ function App({reviews, nearbyOffers, locationsNames}: AppProps): JSX.Element {
               path={AppRoute.Root}
               element={<MainScreen locationsNames={locationsNames} />}
             />
-            <Route path={AppRoute.Room}>
-              <Route index element={<RoomScreen nearbyOffers={nearbyOffers} reviews={reviews}/>}/>
-              <Route path={AppRoute.RoomId} index element={<RoomScreen nearbyOffers={nearbyOffers} reviews={reviews}/>}/>
-            </Route>
+            <Route path={AppRoute.RoomId} element={<RoomScreen />}/>
             <Route
               path='*'
               element={<NotFoundScreen />}

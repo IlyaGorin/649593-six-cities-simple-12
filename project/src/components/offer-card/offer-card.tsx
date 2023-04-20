@@ -1,37 +1,33 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { AppRoute } from '../../const';
-import { Offers } from '../../types/offers';
+import { Offer } from '../../types/offers';
 import { calculateRating } from '../../utils/utils';
 import { findFirstSentence } from '../../utils/utils';
+import { setSelectedHotelId } from '../../store/action';
+import { useAppDispatch } from '../../hooks';
 
 export type OfferCardProps = {
-  offerData: Offers;
-  offerIdChangeHandler?: (id: number|null) => void;
+  offerData: Offer;
   isNearbyOfferCard?: boolean;
 }
 
-function OfferCard({offerData, offerIdChangeHandler, isNearbyOfferCard}:OfferCardProps): JSX.Element {
-  const [offerId, setOfferId] = useState< number | null>(null);
+function OfferCard({offerData, isNearbyOfferCard}:OfferCardProps): JSX.Element {
+
   const cardClassName = classNames({
     'near-places': isNearbyOfferCard,
     'cities': !isNearbyOfferCard
   });
 
-  useEffect(() => {
-    if (offerIdChangeHandler) {
-      offerIdChangeHandler(offerId);
-    }
-  }, [offerId]);
+  const dispatch = useAppDispatch();
 
   return (
     <article className={classNames(`${cardClassName}__card place-card`)}
       onMouseEnter={()=> {
-        setOfferId(offerData.id,);
+        dispatch(setSelectedHotelId(offerData.id));
       }}
       onMouseLeave={()=>{
-        setOfferId(null);
+        dispatch(setSelectedHotelId(null));
       }}
     >
       {offerData?.isPremium && (
@@ -40,7 +36,7 @@ function OfferCard({offerData, offerIdChangeHandler, isNearbyOfferCard}:OfferCar
         </div>
       )}
       <div className={classNames(`${cardClassName}__image-wrapper place-card__image-wrapper`)}>
-        <a href="#">
+        <a>
           <img className="place-card__image" src={offerData.previewImage} width={260} height={200} alt="Place image" />
         </a>
       </div>
@@ -58,7 +54,11 @@ function OfferCard({offerData, offerIdChangeHandler, isNearbyOfferCard}:OfferCar
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Room}${offerData.id}`}>{findFirstSentence(offerData.description)}</Link>
+          <Link
+            to={`${AppRoute.Room}${offerData.id}`}
+          >
+            {findFirstSentence(offerData.title)}
+          </Link>
         </h2>
         <p className="place-card__type">{offerData.type}</p>
       </div>

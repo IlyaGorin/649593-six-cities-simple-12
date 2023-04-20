@@ -2,10 +2,10 @@ export enum AppRoute {
   Root = '/',
   Login = '/login',
   Room = '/offer/',
-  RoomId = ':id',
+  RoomId = '/offer/:id',
 }
 
-export const CHAR_LENGTH = 50;
+export const CHAR_LENGTH = 3;
 
 export enum LocationName {
   PARIS = 'Paris',
@@ -36,4 +36,5 @@ export enum APIRoute {
   Hotels = '/hotels',
   Login = '/login',
   Logout = '/logout',
+  Comments ='/comments',
 }
