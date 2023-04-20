@@ -1,16 +1,17 @@
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/useMap';
+import { useAppSelector } from '../../hooks';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
 import leaflet from 'leaflet';
 import { Icon } from 'leaflet';
-import { Offers } from '../../types/offers';
+import { Offer } from '../../types/offers';
 import { AppRoute } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  offers: Offers[];
-  offerId?: number | null;
+  offers: Offer[];
+  // offerId?: number | null;
 }
 
 const defaultCustomIcon = new Icon({
@@ -25,12 +26,13 @@ const aciveCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-function Map({offers, offerId}:MapProps):JSX.Element {
+function Map({offers}:MapProps):JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
   const centerMapCoords = offers[0].city.location;
   const map = useMap(mapRef, centerMapCoords);
   const { pathname } = useLocation();
   const mapWrapperClassname = classNames('map', pathname === AppRoute.Root ? 'cities__map' : 'property__map');
+  const offerId = useAppSelector((state) => state.selectedHotelId);
 
   useEffect(() => {
     let isMounted = true;

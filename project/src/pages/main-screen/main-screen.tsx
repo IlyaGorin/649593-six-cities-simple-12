@@ -1,4 +1,3 @@
-import {useState } from 'react';
 import { LocationNameType } from '../../const';
 import { useAppSelector} from '../../hooks';
 import { sortOffers } from '../../utils/utils';
@@ -14,18 +13,12 @@ type MainScreenProps = {
 }
 
 function MainScreen({locationsNames}:MainScreenProps ): JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState<number| null>(null);
-
   const cityName = useAppSelector((state) => state.city);
   const sortType = useAppSelector((state) => state.sortType);
   const offers = useAppSelector((state) => state.offers);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
   const filteredOffers = offers.filter(({city})=> city.name === cityName);
-
-  function offerIdChangeHandler(newState:number|null) {
-    setActiveOfferId(newState);
-  }
 
   return (
     <main className="page__main page__main--index">
@@ -43,14 +36,19 @@ function MainScreen({locationsNames}:MainScreenProps ): JSX.Element {
             <SortOption />
             <div className="cities__places-list places__list tabs__content">
               {
-                isOffersDataLoading === true ? <Spinner /> : <OffersList offers={sortOffers(filteredOffers, sortType)} offerIdChangeHandler={offerIdChangeHandler} OfferComponent={OfferCard}/>
+                isOffersDataLoading === true ?
+                  <Spinner /> :
+                  <OffersList
+                    offers={sortOffers(filteredOffers, sortType)}
+                    OfferComponent={OfferCard}
+                  />
               }
             </div>
           </section>
           <div className="cities__right-section">
             {
               offers.length > 0 && (
-                <Map offers={filteredOffers} offerId={activeOfferId} />
+                <Map offers={filteredOffers} />
               )
             }
           </div>

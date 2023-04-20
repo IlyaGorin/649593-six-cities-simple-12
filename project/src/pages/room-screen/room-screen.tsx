@@ -1,30 +1,50 @@
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Offers } from '../../types/offers';
-import { Review } from '../../types/reviews';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchOfferDataAction } from '../../store/api-actions';
 import CommentForm from '../../components/comment-form/comment-form';
+import Spinner from '../../components/spinner/spinner';
 import Map from '../../components/map/map';
 import NearbyOfferCard from '../../components/nearby-offer-card/nearby-offer-card';
 import OffersList from '../../components/offers-list/offers-list';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-
-type RoomScreenProps = {
-  nearbyOffers: Offers[];
-  reviews: Review[];
-}
+import './room-screen.css';
+import { AuthorizationStatus } from '../../const';
+import { setSelectedHotelId } from '../../store/action';
 
 const IMAGES_COUNT = 6;
 
-function RoomScreen({ reviews, nearbyOffers }:RoomScreenProps): JSX.Element {
+function RoomScreen(): JSX.Element {
   const { id } = useParams();
-  //TODO оптимизировать
-  const offers = useAppSelector((state) => state.offers);
-  const necessaryOffer = offers.find((offer)=> offer.id === Number(id))!;
-  const images:string[] = necessaryOffer ? necessaryOffer.images.slice(0, IMAGES_COUNT) : [];
-  const offersForRender = [necessaryOffer, ...nearbyOffers];
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if(id !== undefined) {
+      dispatch(fetchOfferDataAction(id));
+      dispatch(setSelectedHotelId(Number(id)));
+    }
+  }, [dispatch, id]);
+
+  const selectedOffer = useAppSelector((state) => state.selectedOffer);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const comments = useAppSelector((state) => state.comments);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  if (!selectedOffer) {
+    return (
+      <div className='spinner-wrapper'>
+        <Spinner />
+      </div>
+    );
+  }
+
+  const images:string[] = selectedOffer ? selectedOffer.images.slice(0, IMAGES_COUNT) : [];
+  const { host } = selectedOffer;
+
+  const offersForRender = [selectedOffer, ...nearbyOffers];
 
   return (
     <>
@@ -46,42 +66,42 @@ function RoomScreen({ reviews, nearbyOffers }:RoomScreenProps): JSX.Element {
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              {necessaryOffer.isPremium && (
+              {selectedOffer.isPremium && (
                 <div className="property__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {necessaryOffer ? findFirstSentence(necessaryOffer.description) : ''}
+                  {selectedOffer ? findFirstSentence(selectedOffer.title) : ''}
                 </h1>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `${calculateRating(necessaryOffer.rating)}%` }} />
+                  <span style={{ width: `${calculateRating(selectedOffer.rating)}%` }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">{necessaryOffer.rating}</span>
+                <span className="property__rating-value rating__value">{selectedOffer.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {necessaryOffer.type}
+                  {selectedOffer.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {necessaryOffer.bedrooms} Bedrooms
+                  {selectedOffer.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max {necessaryOffer.maxAdults} adults
+                  Max {selectedOffer.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">€{necessaryOffer.price}</b>
+                <b className="property__price-value">€{selectedOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {necessaryOffer.goods.map((good)=>(
+                  {selectedOffer.goods.map((good)=>(
                     <li className="property__inside-item" key={good}>
                       {good}
                     </li>
@@ -92,32 +112,29 @@ function RoomScreen({ reviews, nearbyOffers }:RoomScreenProps): JSX.Element {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width={74} height={74} alt="Host avatar" />
+                    <img className="property__avatar user__avatar" src={host.avatarUrl} width={74} height={74} alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                Angelina
+                    {host.name}
                   </span>
                   <span className="property__user-status">
-                Pro
+                    {host.isPro ? 'pro' : ''}
                   </span>
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="property__text">
-                An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {selectedOffer.description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviews.length}</span></h2>
-                <ReviewsList reviews={reviews} />
-                <CommentForm />
+
+                <ReviewsList reviews={comments}/>
+                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm /> : ''}
               </section>
             </div>
           </div>
-          <Map offers={offersForRender} offerId={necessaryOffer.id}/>
+          <Map offers={offersForRender}/>
         </section>
         <div className="container">
           <section className="near-places places">

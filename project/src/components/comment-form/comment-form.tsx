@@ -1,11 +1,15 @@
 import { useState, ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CHAR_LENGTH } from '../../const';
-// TODO доработать состояние после отправки
+import { postCommentAction } from '../../store/api-actions';
+
 function CommentForm():JSX.Element {
   const [formData, setFormData] = useState({
     rating: '',
     review: ''
   });
+
+  const [isPosting, setIsPosting] = useState(false);
 
   function checkFormValidity ():boolean {
     return formData.review.length >= CHAR_LENGTH && formData.rating !== '';
@@ -13,17 +17,39 @@ function CommentForm():JSX.Element {
 
   const fieldChangeHandler = (evt: ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>)=> {
     const {value, name} = evt.target;
-
     setFormData({
       ...formData,
       [name]: value
     });
   };
 
+  const rating = Number(formData.rating);
+
+  const comment = {
+    rating,
+    comment: formData.review
+  };
+
+  const id = useAppSelector((state) => state.selectedHotelId);
+
+  const dispatch = useAppDispatch();
+
   const formIsValid = checkFormValidity();
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="" method="post" onSubmit={(evt) => {
+      evt.preventDefault();
+      setIsPosting(true);
+      if(id !== null) {
+        dispatch(postCommentAction({ comment, id }))
+          .then(() => {
+            setIsPosting(false);
+            const formElement = evt.target as HTMLFormElement;
+            formElement.reset();
+          });
+      }
+    }}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         <input className="form__rating-input visually-hidden" name="rating" defaultValue={5} id="5-stars" type="radio"
@@ -69,12 +95,13 @@ function CommentForm():JSX.Element {
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" defaultValue={''}
         onChange={fieldChangeHandler}
+        disabled={isPosting}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-    To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit"disabled={!formIsValid}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!formIsValid || isPosting}>{isPosting ? 'Sending' : 'Submit'}</button>
       </div>
     </form>
   );

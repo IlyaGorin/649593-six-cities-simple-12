@@ -6,8 +6,8 @@ type ReviewItemProps = {
   review:Review;
 }
 
-function ReviewItem({review}:ReviewItemProps):JSX.Element {
-  const {user} = review;
+function ReviewItem({ review }:ReviewItemProps):JSX.Element {
+  const { user } = review;
   const date = formatDate(review.date);
 
   return (
@@ -28,7 +28,7 @@ function ReviewItem({review}:ReviewItemProps):JSX.Element {
           </div>
         </div>
         <p className="reviews__text">
-          A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
+          {review.comment}
         </p>
         <time className="reviews__time" dateTime={date.isoDate}>{date.monthYear}</time>
       </div>

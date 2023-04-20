@@ -1,5 +1,5 @@
 import { SortType } from '../const';
-import { Offers } from '../types/offers';
+import { Offer } from '../types/offers';
 
 const RatingValues = {
   1: 20,
@@ -46,7 +46,7 @@ export function formatDate(date: string): { monthYear: string; isoDate: string }
   };
 }
 
-export function sortOffers(offers:Offers[], sortBy:string ) {
+export function sortOffers(offers:Offer[], sortBy:string ) {
   const sortedOffers = [...offers];
 
   switch (sortBy) {
