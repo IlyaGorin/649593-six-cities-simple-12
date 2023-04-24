@@ -7,16 +7,18 @@ import OffersList from '../../components/offers-list/offers-list';
 import OfferCard from '../../components/offer-card/offer-card';
 import SortOption from '../../components/sort-option/sort-option';
 import Spinner from '../../components/spinner/spinner';
+import { getCityName, getSortType } from '../../store/app-data/app-data.selectors';
+import { getOffersData, getOffersLoadingStaus } from '../../store/offers-data/offers-data.selectors';
 
 type MainScreenProps = {
   locationsNames: LocationNameType;
 }
 
 function MainScreen({locationsNames}:MainScreenProps ): JSX.Element {
-  const cityName = useAppSelector((state) => state.city);
-  const sortType = useAppSelector((state) => state.sortType);
-  const offers = useAppSelector((state) => state.offers);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const cityName = useAppSelector(getCityName);
+  const sortType = useAppSelector(getSortType);
+  const offers = useAppSelector(getOffersData);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStaus);
 
   const filteredOffers = offers.filter(({city})=> city.name === cityName);
 

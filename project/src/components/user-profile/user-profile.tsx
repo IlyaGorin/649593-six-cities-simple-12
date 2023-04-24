@@ -1,11 +1,12 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
+import { getAuthCheckedStatus, getUserData } from '../../store/user-process/user-process.selectors';
 
 function UserProfile():JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const userData = useAppSelector((state) => state.userData);
+  const authorizationStatus = useAppSelector(getAuthCheckedStatus);
+  const userData = useAppSelector(getUserData);
   const email = userData ? userData.email : null;
   const dispatch = useAppDispatch();
 
@@ -14,7 +15,7 @@ function UserProfile():JSX.Element {
       <ul className="header__nav-list">
         <li className="header__nav-item user">
           {
-            authorizationStatus !== AuthorizationStatus.Auth ?
+            !authorizationStatus ?
               <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
                 <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                 <span className="header__login">Sign in</span>
@@ -27,7 +28,7 @@ function UserProfile():JSX.Element {
           }
         </li>
         {
-          authorizationStatus === AuthorizationStatus.Auth ?
+          authorizationStatus ?
             <li className="header__nav-item">
               <Link
                 className="header__nav-link"

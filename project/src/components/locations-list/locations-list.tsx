@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { changeCity } from '../../store/app-data/app-data.slice';
 import { LocationNameType } from '../../const';
 
 type LocationsListProps = {

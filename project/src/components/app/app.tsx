@@ -1,11 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import { HelmetProvider } from 'react-helmet-async';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchOffersAction } from '../../store/api-actions';
+import { useAppSelector } from '../../hooks';
 import { AppRoute, LocationNameType } from '../../const';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import Layout from '../layout/layout';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -18,12 +17,7 @@ type AppProps = {
 }
 
 function App({ locationsNames }: AppProps): JSX.Element {
-  const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-
-  useEffect(() => {
-    dispatch(fetchOffersAction());
-  }, [dispatch]);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HelmetProvider>

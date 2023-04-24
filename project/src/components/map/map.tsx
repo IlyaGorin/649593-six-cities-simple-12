@@ -7,11 +7,11 @@ import leaflet from 'leaflet';
 import { Icon } from 'leaflet';
 import { Offer } from '../../types/offers';
 import { AppRoute } from '../../const';
+import { getSelectedHotelId } from '../../store/selected-offer-data/selected-offer-data.selectors';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   offers: Offer[];
-  // offerId?: number | null;
 }
 
 const defaultCustomIcon = new Icon({
@@ -32,7 +32,7 @@ function Map({offers}:MapProps):JSX.Element {
   const map = useMap(mapRef, centerMapCoords);
   const { pathname } = useLocation();
   const mapWrapperClassname = classNames('map', pathname === AppRoute.Root ? 'cities__map' : 'property__map');
-  const offerId = useAppSelector((state) => state.selectedHotelId);
+  const offerId = useAppSelector(getSelectedHotelId);
 
   useEffect(() => {
     let isMounted = true;
