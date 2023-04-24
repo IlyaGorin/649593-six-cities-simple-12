@@ -45,7 +45,12 @@ function RoomScreen(): JSX.Element {
   const images:string[] = selectedOffer ? selectedOffer.images.slice(0, IMAGES_COUNT) : [];
   const { host } = selectedOffer;
 
-  const offersForRender = useMemo(() => [selectedOffer, ...nearbyOffers], [selectedOffer, nearbyOffers]);
+  const offersForRender = useMemo(() => {
+    if (!selectedOffer || !nearbyOffers) {
+      return [];
+    }
+    return [selectedOffer, ...nearbyOffers];
+  }, [selectedOffer, nearbyOffers]);
 
   return (
     <>
