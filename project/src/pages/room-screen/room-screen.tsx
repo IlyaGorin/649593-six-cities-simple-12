@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { fetchOfferDataAction } from '../../store/api-actions';
 import CommentForm from '../../components/comment-form/comment-form';
 import Spinner from '../../components/spinner/spinner';
@@ -45,7 +45,7 @@ function RoomScreen(): JSX.Element {
   const images:string[] = selectedOffer ? selectedOffer.images.slice(0, IMAGES_COUNT) : [];
   const { host } = selectedOffer;
 
-  const offersForRender = [selectedOffer, ...nearbyOffers];
+  const offersForRender = useMemo(() => [selectedOffer, ...nearbyOffers], [selectedOffer, nearbyOffers]);
 
   return (
     <>
@@ -129,7 +129,6 @@ function RoomScreen(): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-
                 <ReviewsList reviews={comments}/>
                 {authorizationStatus ? <CommentForm /> : ''}
               </section>

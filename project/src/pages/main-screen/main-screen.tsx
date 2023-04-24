@@ -11,6 +11,7 @@ import OffersList from '../../components/offers-list/offers-list';
 import OfferCard from '../../components/offer-card/offer-card';
 import SortOption from '../../components/sort-option/sort-option';
 import Spinner from '../../components/spinner/spinner';
+import { useMemo } from 'react';
 
 type MainScreenProps = {
   locationsNames: LocationNameType;
@@ -23,7 +24,7 @@ function MainScreen({locationsNames}:MainScreenProps ): JSX.Element {
   const isOffersDataLoading = useAppSelector(getOffersLoadingStaus);
   const hasErorr = useAppSelector(getOffersErorrStatus);
 
-  const filteredOffers = offers.filter(({city})=> city.name === cityName);
+  const filteredOffers = useMemo(() => offers.filter(({city}) => city.name === cityName), [offers, cityName]);
 
   const mainPageClassName = classNames('page__main page__main--index', {
     'page__main--index-empty': hasErorr
