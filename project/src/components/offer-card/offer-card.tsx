@@ -4,7 +4,7 @@ import { AppRoute } from '../../const';
 import { Offer } from '../../types/offers';
 import { calculateRating } from '../../utils/utils';
 import { findFirstSentence } from '../../utils/utils';
-import { setSelectedHotelId } from '../../store/action';
+import { setSelectedHotelId } from '../../store/selected-offer-data/selected-offer-data.slice';
 import { useAppDispatch } from '../../hooks';
 
 export type OfferCardProps = {

@@ -2,6 +2,7 @@ import { useState, ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CHAR_LENGTH } from '../../const';
 import { postCommentAction } from '../../store/api-actions';
+import { getSelectedHotelId } from '../../store/selected-offer-data/selected-offer-data.selectors';
 
 function CommentForm():JSX.Element {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ function CommentForm():JSX.Element {
     comment: formData.review
   };
 
-  const id = useAppSelector((state) => state.selectedHotelId);
+  const id = useAppSelector(getSelectedHotelId);
 
   const dispatch = useAppDispatch();
 

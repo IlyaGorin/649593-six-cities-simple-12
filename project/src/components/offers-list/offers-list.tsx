@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Offer } from '../../types/offers';
 
 type OffersListProps<T extends Offer> = {
@@ -7,13 +8,16 @@ type OffersListProps<T extends Offer> = {
 }
 
 function OffersList<T extends Offer>({ offers, offerIdChangeHandler, OfferComponent }: OffersListProps<T>): JSX.Element {
-  return (
-    <>
-      {offers.map((offerData) => (
-        <OfferComponent key={offerData.id} offerData={offerData} offerIdChangeHandler={offerIdChangeHandler} />
-      ))}
-    </>
-  );
+  const offersList = useMemo(
+    () => (
+      <>
+        {offers.map((offerData) => (
+          <OfferComponent key={offerData.id} offerData={offerData} offerIdChangeHandler={offerIdChangeHandler} />
+        ))}
+      </>
+    ), [offers, offerIdChangeHandler, OfferComponent]);
+
+  return offersList;
 }
 
 export default OffersList;

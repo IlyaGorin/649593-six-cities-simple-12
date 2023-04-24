@@ -5,7 +5,7 @@ import {ToastContainer} from 'react-toastify';
 import App from './components/app/app';
 import { store } from './store';
 import { LocationName } from './const';
-import { checkAuthAction } from './store/api-actions';
+import { checkAuthAction, fetchOffersAction } from './store/api-actions';
 import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
@@ -13,6 +13,7 @@ const root = ReactDOM.createRoot(
 );
 
 store.dispatch(checkAuthAction());
+store.dispatch(fetchOffersAction());
 
 root.render(
   <React.StrictMode>

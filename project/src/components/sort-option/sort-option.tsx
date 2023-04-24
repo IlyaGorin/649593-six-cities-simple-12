@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch } from '../../hooks';
-import { changeSortType } from '../../store/action';
+import { changeSortType } from '../../store/app-data/app-data.slice';
 import { SortType } from '../../const';
 
 function SortOption():JSX.Element {
@@ -11,7 +11,7 @@ function SortOption():JSX.Element {
   });
 
   const dispatch = useAppDispatch();
-  const sortValues = Object.values(SortType);
+  const sortValues = useMemo(() => Object.values(SortType), []);
 
   return (
     <form className="places__sorting" action="#" method="get">

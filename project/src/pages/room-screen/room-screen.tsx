@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { findFirstSentence } from '../../utils/utils';
 import { calculateRating } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { fetchOfferDataAction } from '../../store/api-actions';
 import CommentForm from '../../components/comment-form/comment-form';
 import Spinner from '../../components/spinner/spinner';
@@ -12,8 +12,9 @@ import NearbyOfferCard from '../../components/nearby-offer-card/nearby-offer-car
 import OffersList from '../../components/offers-list/offers-list';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import './room-screen.css';
-import { AuthorizationStatus } from '../../const';
-import { setSelectedHotelId } from '../../store/action';
+import { setSelectedHotelId } from '../../store/selected-offer-data/selected-offer-data.slice';
+import { getSelectedOffer, getNearbyOffers, getComments } from '../../store/selected-offer-data/selected-offer-data.selectors';
+import { getAuthCheckedStatus } from '../../store/user-process/user-process.selectors';
 
 const IMAGES_COUNT = 6;
 
@@ -28,10 +29,10 @@ function RoomScreen(): JSX.Element {
     }
   }, [dispatch, id]);
 
-  const selectedOffer = useAppSelector((state) => state.selectedOffer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const comments = useAppSelector((state) => state.comments);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const selectedOffer = useAppSelector(getSelectedOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const comments = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthCheckedStatus);
 
   if (!selectedOffer) {
     return (
@@ -44,7 +45,12 @@ function RoomScreen(): JSX.Element {
   const images:string[] = selectedOffer ? selectedOffer.images.slice(0, IMAGES_COUNT) : [];
   const { host } = selectedOffer;
 
-  const offersForRender = [selectedOffer, ...nearbyOffers];
+  const offersForRender = useMemo(() => {
+    if (!selectedOffer || !nearbyOffers) {
+      return [];
+    }
+    return [selectedOffer, ...nearbyOffers];
+  }, [selectedOffer, nearbyOffers]);
 
   return (
     <>
@@ -128,9 +134,8 @@ function RoomScreen(): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-
                 <ReviewsList reviews={comments}/>
-                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm /> : ''}
+                {authorizationStatus ? <CommentForm /> : ''}
               </section>
             </div>
           </div>

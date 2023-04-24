@@ -5,7 +5,7 @@ export enum AppRoute {
   RoomId = '/offer/:id',
 }
 
-export const CHAR_LENGTH = 3;
+export const CHAR_LENGTH = 50;
 
 export enum LocationName {
   PARIS = 'Paris',
@@ -37,4 +37,11 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Comments ='/comments',
+}
+
+export enum NameSpace {
+  Data = 'DATA',
+  App = 'APP',
+  User = 'USER',
+  OfferData = 'OFFER_DATA',
 }
